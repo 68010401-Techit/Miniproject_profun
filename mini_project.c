@@ -168,7 +168,7 @@ void delete(const char* Data){
        
         if (strcmp(tempName, searchName) == 0) {
             found = 1;
-            //ข้ามการเขียนบรรทัดนี้ไปไฟล์ชั่วคราว
+            //ข้ามการเขียนบรรทัดนี้ไปยังไฟล์ชั่วคราว
         } else {
             fprintf(tempFile, "%s", line);
         }
@@ -233,19 +233,45 @@ void search(const char* Data){
     }
 }
 
+//ฟังก์ชันแสดงข้อมูลทั้งหมด
+void viewAll(const char* Data) {
+    FILE *file = fopen(Data, "r");
+    if (file == NULL) {
+        printf("No data found.\n");
+        return;
+    }
+
+    printf("\n===============================================================\n");
+    printf("%-20s %-15s %-15s %-20s\n", "Name", "Position", "Phone", "Email");
+    printf("===============================================================\n");
+
+    char line[200];
+    while (fgets(line, sizeof(line), file)) {
+        char tempName[50], tempPosition[50], tempPhone[15], tempEmail[50];
+        sscanf(line, "%[^,],%[^,],%[^,],%[^\n]", tempName, tempPosition, tempPhone, tempEmail);
+        printf("%-20s %-15s %-15s %-20s\n", tempName, tempPosition, tempPhone, tempEmail);
+    }
+
+    printf("===============================================================\n\n");
+    fclose(file);
+
+}
+
 //menu
 int main() {
     int choice;
     
     do{
-        printf("Menu\n");
+    printf("============= Menu =============\n");
     printf("1.add\n");
     printf("2.update\n");
     printf("3.delete\n");
     printf("4.search\n");
-    printf("5.exit\n");
-    
+    printf("5.view all contact\n");
+    printf("6.exit\n");
+    printf("================================\n");
     printf("Enter your choice: ");
+    
     scanf("%d", &choice);
     while(getchar() != '\n'); //ล้างบัฟเฟอร์
     
@@ -263,9 +289,16 @@ int main() {
             search("data.csv"); 
             break;
         case 5:
+            viewAll("data.csv");
+            break;
+        case 6:
             printf("Exiting the program.\n");
+            break;
+        default:
+            printf("Error command\n");
+            break;
     }
-} while(choice != 5);
+} while(choice != 6);
 
     return 0;
     }
