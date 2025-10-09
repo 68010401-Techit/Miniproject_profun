@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+
+#include "unit.h"
+#include "E2E.h"
 
 //ฟังก์ชันเพิ่มข้อมูล
 void add(const char* Data){
@@ -241,9 +245,9 @@ void viewAll(const char* Data) {
         return;
     }
 
-    printf("\n===============================================================\n");
+    printf("\n================================================================================\n");
     printf("%-20s %-15s %-15s %-20s\n", "Name", "Position", "Phone", "Email");
-    printf("===============================================================\n");
+    printf("================================================================================\n");
 
     char line[200];
     while (fgets(line, sizeof(line), file)) {
@@ -252,7 +256,7 @@ void viewAll(const char* Data) {
         printf("%-20s %-15s %-15s %-20s\n", tempName, tempPosition, tempPhone, tempEmail);
     }
 
-    printf("===============================================================\n\n");
+    printf("===============================================================================\n\n");
     fclose(file);
 
 }
@@ -268,7 +272,9 @@ int main() {
     printf("3.delete\n");
     printf("4.search\n");
     printf("5.view all contact\n");
-    printf("6.exit\n");
+    printf("6.unit test\n");
+    printf("7.End to End test\n");
+    printf("8.exit\n");
     printf("================================\n");
     printf("Enter your choice: ");
     
@@ -292,13 +298,19 @@ int main() {
             viewAll("data.csv");
             break;
         case 6:
+            unit();
+            break;
+        case 7:
+            E2E();
+            break;
+        case 8:
             printf("Exiting the program.\n");
             break;
         default:
-            printf("Error command\n");
+            printf("Invalid choice! Please try again.\n");
             break;
     }
-} while(choice != 6);
+} while(choice != 7);
 
     return 0;
     }
